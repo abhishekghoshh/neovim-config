@@ -7,7 +7,10 @@ return {
       config.setup({
     	  ensure_installed = { "c", "lua", "go", "rust", "java", "scala", "sql", "python", "javascript" },
         auto_install = true,
-        highlight = { enable = true },
+        highlight = { 
+          enable = true,
+          use_languagetree = true,
+        },
         indent = { enable = true },
       })
     end
