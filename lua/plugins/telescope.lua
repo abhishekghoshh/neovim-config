@@ -4,15 +4,20 @@ return {
 	    'nvim-lua/plenary.nvim' 
     },
     config = function()
-      local builtin = require('telescope.builtin')
-      vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-      vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-      vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-      vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+      vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd> Telescope find_files <CR>', { noremap = true, desc = 'Find files' })
+      vim.api.nvim_set_keymap('n', '<leader>fa', '<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>', { noremap = true, desc = 'Find all' })
+      vim.api.nvim_set_keymap('n', '<leader>fg', '<cmd> Telescope live_grep <CR>', { noremap = true, desc = 'Live grep' })
+      vim.api.nvim_set_keymap('n', '<leader>fb', '<cmd> Telescope buffers <CR>', { noremap = true, desc = 'Find buffers' })
+      vim.api.nvim_set_keymap('n', '<leader>fh', '<cmd> Telescope help_tags <CR>', { noremap = true, desc = 'Help page' })
+      vim.api.nvim_set_keymap('n', '<leader>fo', '<cmd> Telescope oldfiles <CR>', { noremap = true, desc = 'Find oldfiles' })
+      vim.api.nvim_set_keymap('n', '<leader>fz', '<cmd> Telescope current_buffer_fuzzy_find <CR>', { noremap = true, desc = 'Find in current buffer' })
+
+      vim.api.nvim_set_keymap('n', '<leader>cm', '<cmd> Telescope git_commits <CR>', { noremap = true, desc = 'Git commits' })
+      vim.api.nvim_set_keymap('n', '<leader>gt', '<cmd> Telescope git_status <CR>', { noremap = true, desc = 'Git status' })
+
+      vim.api.nvim_set_keymap('n', '<leader>ma', '<cmd> Telescope marks <CR>', { noremap = true, desc = 'Telescope bookmarks' })
+
       local telescope = require("telescope")
-      -- telescope.load_extension("themes")
-      -- telescope.load_extension("terms")
-      -- telescope.load_extension("fzf")
       telescope.setup({
         defaults = {
           vimgrep_arguments = {
