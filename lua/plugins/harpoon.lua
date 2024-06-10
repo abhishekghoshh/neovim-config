@@ -1,4 +1,3 @@
-
 return {
   'ThePrimeagen/harpoon',
   lazy = false,
@@ -11,7 +10,7 @@ return {
     vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
 
     vim.keymap.set("n", "<leader>hn", function() ui.nav_next() end)
-    vim.keymap.set("n", "<leader>hp",function() ui.nav_prev() end)
+    vim.keymap.set("n", "<leader>hp", function() ui.nav_prev() end)
 
     vim.keymap.set("n", "<leader>h1", function() ui.nav_file(1) end)
     vim.keymap.set("n", "<leader>h2", function() ui.nav_file(2) end)

@@ -1,4 +1,3 @@
-
 return {
   'nanozuki/tabby.nvim',
   -- event = 'VimEnter', -- if you want lazy load, see below

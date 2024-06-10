@@ -1,5 +1,5 @@
 local plugins = {
-  {"ThePrimeagen/vim-be-good"}
+  { "ThePrimeagen/vim-be-good" }
 }
 
 return plugins

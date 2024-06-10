@@ -1,4 +1,3 @@
-
 -- mappings for normal mode
 vim.api.nvim_set_keymap("n", ";", ":", { noremap = true })
 vim.api.nvim_set_keymap("n", "ZZ", "<cmd> qa <CR>", { noremap = true })
@@ -20,13 +19,16 @@ vim.api.nvim_set_keymap('n', '<C-c>', '<cmd> %y+ <CR>', { noremap = true, desc =
 vim.api.nvim_set_keymap('n', '<leader>n', '<cmd> set nu <CR>', { noremap = true, desc = 'Toggle line number' })
 vim.api.nvim_set_keymap('n', '<leader>rn', '<cmd> set rnu <CR>', { noremap = true, desc = 'Toggle relative number' })
 
-vim.api.nvim_set_keymap('n', 'j', 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { noremap = true, expr = true, desc = 'Move down' })
-vim.api.nvim_set_keymap('n', 'k', 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { noremap = true, expr = true, desc = 'Move up' })
-vim.api.nvim_set_keymap('n', '<Up>', 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { noremap = true, expr = true, desc = 'Move up' })
-vim.api.nvim_set_keymap('n', '<Down>', 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { noremap = true, expr = true, desc = 'Move down' })
+vim.api.nvim_set_keymap('n', 'j', 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"',
+  { noremap = true, expr = true, desc = 'Move down' })
+vim.api.nvim_set_keymap('n', 'k', 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"',
+  { noremap = true, expr = true, desc = 'Move up' })
+vim.api.nvim_set_keymap('n', '<Up>', 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"',
+  { noremap = true, expr = true, desc = 'Move up' })
+vim.api.nvim_set_keymap('n', '<Down>', 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"',
+  { noremap = true, expr = true, desc = 'Move down' })
 
 vim.api.nvim_set_keymap('n', '<leader>b', '<cmd> enew <CR>', { noremap = true, desc = 'New buffer' })
-vim.api.nvim_set_keymap('n', '<leader>ch', '<cmd> NvCheatsheet <CR>', { noremap = true, desc = 'Mapping cheatsheet' })
 
 
 -- mappings for insert mode
@@ -37,14 +39,20 @@ vim.api.nvim_set_keymap("i", "<C-z>", "<C-o>u", { noremap = true })
 vim.api.nvim_set_keymap("v", ">", ">gv", { noremap = true })
 vim.api.nvim_set_keymap("v", "<", "<gv", { noremap = true })
 
-vim.api.nvim_set_keymap('v', '<Up>', 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { noremap = true, expr = true, desc = 'Move up' })
-vim.api.nvim_set_keymap('v', '<Down>', 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { noremap = true, expr = true, desc = 'Move down' })
+vim.api.nvim_set_keymap('v', '<Up>', 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"',
+  { noremap = true, expr = true, desc = 'Move up' })
+vim.api.nvim_set_keymap('v', '<Down>', 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"',
+  { noremap = true, expr = true, desc = 'Move down' })
 
 
 
-vim.api.nvim_set_keymap('t', '<C-x>', vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true), { noremap = true, desc = 'Escape terminal mode' })
+vim.api.nvim_set_keymap('t', '<C-x>', vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true),
+  { noremap = true, desc = 'Escape terminal mode' })
 
 
-vim.api.nvim_set_keymap('x', 'j', 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { noremap = true, expr = true, desc = 'Move down' })
-vim.api.nvim_set_keymap('x', 'k', 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { noremap = true, expr = true, desc = 'Move up' })
-vim.api.nvim_set_keymap('x', 'p', 'p:let @+=@0<CR>:let @"=@0<CR>', { noremap = true, silent = true, desc = 'Dont copy replaced text' })
+vim.api.nvim_set_keymap('x', 'j', 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"',
+  { noremap = true, expr = true, desc = 'Move down' })
+vim.api.nvim_set_keymap('x', 'k', 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"',
+  { noremap = true, expr = true, desc = 'Move up' })
+vim.api.nvim_set_keymap('x', 'p', 'p:let @+=@0<CR>:let @"=@0<CR>',
+  { noremap = true, silent = true, desc = 'Dont copy replaced text' })

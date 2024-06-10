@@ -1,21 +1,31 @@
 return {
-    'nvim-telescope/telescope.nvim', tag = '0.1.6',
-    dependencies = { 
-	    'nvim-lua/plenary.nvim' 
+  {
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.6',
+    dependencies = {
+      'nvim-lua/plenary.nvim'
     },
     config = function()
-      vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd> Telescope find_files <CR>', { noremap = true, desc = 'Find files' })
-      vim.api.nvim_set_keymap('n', '<leader>fa', '<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>', { noremap = true, desc = 'Find all' })
+      vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd> Telescope find_files <CR>',
+        { noremap = true, desc = 'Find files' })
+      vim.api.nvim_set_keymap('n', '<leader>fa', '<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>',
+        { noremap = true, desc = 'Find all' })
       vim.api.nvim_set_keymap('n', '<leader>fg', '<cmd> Telescope live_grep <CR>', { noremap = true, desc = 'Live grep' })
-      vim.api.nvim_set_keymap('n', '<leader>fb', '<cmd> Telescope buffers <CR>', { noremap = true, desc = 'Find buffers' })
+      vim.api.nvim_set_keymap('n', '<leader>fb', '<cmd> Telescope buffers <CR>',
+        { noremap = true, desc = 'Find buffers' })
       vim.api.nvim_set_keymap('n', '<leader>fh', '<cmd> Telescope help_tags <CR>', { noremap = true, desc = 'Help page' })
-      vim.api.nvim_set_keymap('n', '<leader>fo', '<cmd> Telescope oldfiles <CR>', { noremap = true, desc = 'Find oldfiles' })
-      vim.api.nvim_set_keymap('n', '<leader>fz', '<cmd> Telescope current_buffer_fuzzy_find <CR>', { noremap = true, desc = 'Find in current buffer' })
+      vim.api.nvim_set_keymap('n', '<leader>fo', '<cmd> Telescope oldfiles <CR>',
+        { noremap = true, desc = 'Find oldfiles' })
+      vim.api.nvim_set_keymap('n', '<leader>fz', '<cmd> Telescope current_buffer_fuzzy_find <CR>',
+        { noremap = true, desc = 'Find in current buffer' })
 
-      vim.api.nvim_set_keymap('n', '<leader>cm', '<cmd> Telescope git_commits <CR>', { noremap = true, desc = 'Git commits' })
-      vim.api.nvim_set_keymap('n', '<leader>gt', '<cmd> Telescope git_status <CR>', { noremap = true, desc = 'Git status' })
+      vim.api.nvim_set_keymap('n', '<leader>gc', '<cmd> Telescope git_commits <CR>',
+        { noremap = true, desc = 'Git commits' })
+      vim.api.nvim_set_keymap('n', '<leader>gs', '<cmd> Telescope git_status <CR>',
+        { noremap = true, desc = 'Git status' })
 
-      vim.api.nvim_set_keymap('n', '<leader>ma', '<cmd> Telescope marks <CR>', { noremap = true, desc = 'Telescope bookmarks' })
+      vim.api.nvim_set_keymap('n', '<leader>ma', '<cmd> Telescope marks <CR>',
+        { noremap = true, desc = 'Telescope bookmarks' })
 
       local telescope = require("telescope")
       telescope.setup({
@@ -77,7 +87,15 @@ return {
             override_file_sorter = true,
             case_mode = "smart_case",
           },
+          ["ui-select"] = {
+            require("telescope.themes").get_dropdown({}),
+          },
         },
       })
+      require("telescope").load_extension("ui-select")
     end
+  },
+  {
+    "nvim-telescope/telescope-ui-select.nvim"
   }
+}
