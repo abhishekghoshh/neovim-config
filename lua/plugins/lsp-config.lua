@@ -8,20 +8,18 @@ return {
     opts = {
       auto_install = true,
       ensure_installed = {
-        "vim",
-        "lua",
-        "html",
-        "css",
-        "javascript",
-        "typescript",
-        "tsx",
-        "c",
-        "markdown",
-        "markdown_inline",
-        "python",
-        "go",
-        "rust",
-        "java",
+        "lua-language-server",
+        "stylua",
+        "css-lsp",
+        "html-lsp",
+        "typescript-language-server",
+        "deno",
+        "prettier",
+        "clangd",
+        "clang-format",
+        "pyre",
+        "gopls",
+        "rust-analyzer",
       },
       indent = { enable = true, },
     }
@@ -31,7 +29,10 @@ return {
     lazy = false,
     opts = {
       auto_install = true,
-      ensure_installed = { "lua_ls", "tsserver" },
+      ensure_installed = {
+        "lua_ls",
+        "tsserver"
+      },
       indent = { enable = true, },
     },
   },
@@ -96,7 +97,47 @@ return {
       lspconfig.lua_ls.setup {
         on_attach = on_attach,
         capabilities = capabilities,
-
+      }
+      lspconfig.gopls.setup {
+        -- In your nvim-lspconfig configuration
+        on_attach = function(client, bufnr)
+          --- Auto commands before writing
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            callback = function()
+              --- auto format on save
+              vim.lsp.buf.format({ bufnr = bufnr })
+              --- Auto import on save
+              local params = vim.lsp.util.make_range_params(nil, "utf-16")
+              params.context = { only = { "source.organizeImports" } }
+              local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+              for _, res in pairs(result or {}) do
+                for _, r in pairs(res.result or {}) do
+                  if r.edit then
+                    vim.lsp.util.apply_workspace_edit(r.edit, "utf-16")
+                  else
+                    vim.lsp.buf.execute_command(r.command)
+                  end
+                end
+              end
+            end,
+          })
+        end,
+        capabilities = capabilities,
+        cmd = { "gopls" },
+        filetypes = { "go", "gomod", "gowork", "gotmpl" },
+        root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+        settings = {
+          gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            analyses = {
+              unusedparams = true,
+            },
+            staticcheck = true, -- Enable staticcheck analysis
+            gofumpt = true, -- Enable gofmt formatting (optional)
+          },
+        },
       }
     end,
   }
