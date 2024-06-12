@@ -70,29 +70,13 @@ return {
         { desc = "List workspace folders" })
 
       local lspconfig = require("lspconfig")
-      -- on attach function
-      local on_attach = function(client, bufnr)
+      local lsp_config_util = require("utils.lspconfig")
 
-      end
+      -- on attach function
+      local on_attach = lsp_config_util.on_attach
       -- capabilities function
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities.textDocument.completion.completionItem = {
-        documentationFormat = { "markdown", "plaintext" },
-        snippetSupport = true,
-        preselectSupport = true,
-        insertReplaceSupport = true,
-        labelDetailsSupport = true,
-        deprecatedSupport = true,
-        commitCharactersSupport = true,
-        tagSupport = { valueSet = { 1 } },
-        resolveSupport = {
-          properties = {
-            "documentation",
-            "detail",
-            "additionalTextEdits",
-          },
-        },
-      }
+      local capabilities = lsp_config_util.capabilities
+
       -- lua ls setup
       lspconfig.lua_ls.setup {
         on_attach = on_attach,
@@ -135,7 +119,7 @@ return {
               unusedparams = true,
             },
             staticcheck = true, -- Enable staticcheck analysis
-            gofumpt = true, -- Enable gofmt formatting (optional)
+            gofumpt = true,     -- Enable gofmt formatting (optional)
           },
         },
       }
