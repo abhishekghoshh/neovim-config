@@ -3,9 +3,12 @@ return {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.6',
     dependencies = {
-      'nvim-lua/plenary.nvim'
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }
     },
-    config = function()
+    cmd = "Telescope",
+    init = function()
       vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd> Telescope find_files <CR>',
         { noremap = true, desc = 'Find files' })
       vim.api.nvim_set_keymap('n', '<leader>fa', '<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>',
@@ -26,8 +29,10 @@ return {
 
       vim.api.nvim_set_keymap('n', '<leader>ma', '<cmd> Telescope marks <CR>',
         { noremap = true, desc = 'Telescope bookmarks' })
-
+    end,
+    config = function()
       local telescope = require("telescope")
+      local actions = require("telescope.actions")
       telescope.setup({
         defaults = {
           vimgrep_arguments = {
@@ -75,10 +80,30 @@ return {
           -- Developer configurations: Not meant for general override
           buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
           mappings = {
-            n = { ["q"] = require("telescope.actions").close },
+            i = {
+              ["<C-j>"] = actions.move_selection_next,
+              ["<C-k>"] = actions.move_selection_previous,
+              ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+              ["<esc>"] = actions.close,
+              ["<CR>"] = actions.select_default + actions.center,
+              ["<C-d>"] = function(bufnr)
+                require("telescope.state").get_status(bufnr).picker.layout_config.scroll_speed = nil
+                return require("telescope.actions").preview_scrolling_down(bufnr)
+              end,
+              ["<C-u>"] = function(bufnr)
+                require("telescope.state").get_status(bufnr).picker.layout_config.scroll_speed = nil
+                return require("telescope.actions").preview_scrolling_up(bufnr)
+              end,
+            },
+            n = {
+              ["<ScrollWheelUp>"] = require('telescope.actions').move_selection_previous,
+              ["<ScrollWheelDown>"] = require('telescope.actions').move_selection_next,
+              ["<C-j>"] = actions.move_selection_next,
+              ["<C-k>"] = actions.move_selection_previous,
+              ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+            },
           },
         },
-
         extensions_list = { "themes", "terms", "fzf" },
         extensions = {
           fzf = {
@@ -92,7 +117,7 @@ return {
           },
         },
       })
-      require("telescope").load_extension("ui-select")
+      telescope.load_extension("ui-select")
     end
   },
   {

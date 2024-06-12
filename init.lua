@@ -1,3 +1,11 @@
+-- vim options and general mappings starts here
+require("vim-options")
+require("mappings")
+-- vim options and general mappings ends here
+
+
+
+
 -- lazy setup starts here
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -11,14 +19,5 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   })
 end
 vim.opt.rtp:prepend(lazypath)
--- lazy setup ends here
-
-
-
-require("vim-options")
-
-require("mappings")
-
 require("lazy").setup("plugins")
-
-require("test")
+-- lazy setup ends here
