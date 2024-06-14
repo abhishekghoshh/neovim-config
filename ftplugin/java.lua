@@ -1,22 +1,21 @@
-local capabilities = require("utils..lspconfig").capabilities
+local capabilities = require("utils.lspconfig").capabilities
 local on_attach = require("utils.lspconfig").on_attach
 local lspconfig = require("lspconfig")
 local jdtls = require("jdtls")
 
 
 local home = os.getenv("HOME")
-local workspace_folder = home .. "/Desktop/personal-projects/"
+local workspace_folder = home .. "/workspace/"
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 local project_dir = workspace_folder .. project_name
 
 
 
 local jdtls_path = home .. "/.local/share/nvim/mason/packages/jdtls"
-local jdtls_install_location = jdtls_path .. "/jdtls fmn"
-local equinox_folder = jdtls_path .. "/plugins/org.eclipse.equinox.launcher_1.6.800.v20240304-1850.jar"
-local jdtls_config = jdtls_path .. "/config_mac_arm"
+local jdtls_install_location = jdtls_path .. "/jdtls"
+local equinox_folder = jdtls_path .. "/plugins/org.eclipse.equinox.launcher_1.6.800.v20240330-1250.jar"
+local jdtls_config = jdtls_path .. "/config_linux_arm"
 local lombok_path = jdtls_path .. "/lombok.jar"
-
 
 -- Setup Capabilities
 local extendedClientCapabilities = jdtls.extendedClientCapabilities
@@ -33,19 +32,9 @@ vim.list_extend(
     "\n"
   )
 )
-
---- This is test method
-local function test()
-  local status, nl = pcall(require, "which-key")
-  print(status)
-end
--- Set up the keybinding
-vim.keymap.set("n", "<leader>test", test, { silent = true })
-
-
 local config = {
   cmd = {
-    'java', -- or '/path/to/java17_or_newer/bin/java' -- depends on if `java` is in your $PATH env variable and if it points to the right version.
+    '/usr/bin/java', -- or '/path/to/java17_or_newer/bin/java' -- depends on if `java` is in your $PATH env variable and if it points to the right version.
     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
     '-Dosgi.bundles.defaultStartLevel=4',
     '-Declipse.product=org.eclipse.jdt.ls.core.product',
@@ -71,13 +60,9 @@ local config = {
         updateBuildConfiguration = "interactive",
         runtimes = {
           {
-            name = "JavaSE-11",
-            path = "~/.sdkman/candidates/java/11.0.17-tem",
-          },
-          {
-            name = "JavaSE-18",
-            path = "~/.sdkman/candidates/java/18.0.2-sem",
-          },
+            name = "JavaSE-21",
+            path = "/usr/lib/jvm/java-1.21.0-openjdk-arm64",
+          }
         },
       },
       maven = {
@@ -109,7 +94,7 @@ local config = {
   },
 }
 
-config["on_attach"] = function(client, bufnr)
+config.on_attach = function(client, bufnr)
   local _, _ = pcall(vim.lsp.codelens.refresh)
   jdtls.setup_dap({ hotcodereplace = "auto" })
   on_attach(client, bufnr)
@@ -118,7 +103,6 @@ config["on_attach"] = function(client, bufnr)
     jdtls_dap.setup_dap_main_class_configs()
   end
 end
-
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   pattern = { "*.java" },
@@ -130,10 +114,7 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 jdtls.start_or_attach(config)
 
 
-local status_ok, which_key = pcall(require, "which-key")
-if not status_ok then
-  return
-end
+local which_key = require("which-key")
 
 local opts = {
   mode = "n",     -- NORMAL mode
@@ -154,7 +135,7 @@ local vopts = {
 }
 
 local mappings = {
-  C = {
+  j = {
     name = "Java",
     o = { "<Cmd>lua require'jdtls'.organize_imports()<CR>", "Organize Imports" },
     v = { "<Cmd>lua require('jdtls').extract_variable()<CR>", "Extract Variable" },
@@ -166,7 +147,7 @@ local mappings = {
 }
 
 local vmappings = {
-  C = {
+  j = {
     name = "Java",
     v = { "<Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>", "Extract Variable" },
     c = { "<Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>", "Extract Constant" },
@@ -175,5 +156,4 @@ local vmappings = {
 }
 
 which_key.register(mappings, opts)
-which_key.register(vmappings, vopts)
 which_key.register(vmappings, vopts)

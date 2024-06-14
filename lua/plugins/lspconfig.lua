@@ -3,26 +3,29 @@ return {
     "williamboman/mason.nvim",
     lazy = false,
     config = function()
-      require("mason").setup()
-    end,
-    opts = {
-      auto_install = true,
-      ensure_installed = {
-        "lua-language-server",
-        "stylua",
-        "css-lsp",
-        "html-lsp",
-        "typescript-language-server",
-        "deno",
-        "prettier",
-        "clangd",
-        "clang-format",
-        "pyre",
-        "gopls",
-        "rust-analyzer",
-      },
-      indent = { enable = true, },
-    }
+      require("mason").setup({
+        auto_install = true,
+        ensure_installed = {
+          "lua-language-server",
+          "stylua",
+          "css-lsp",
+          "html-lsp",
+          "typescript-language-server",
+          "deno",
+          "prettier",
+          "clangd",
+          "clang-format",
+          "pyre",
+          "gopls",
+          "rust-analyzer",
+          "java-test",
+          "java-debug-adapter",
+        },
+        indent = {
+          enable = true,
+        },
+      })
+    end
   },
   {
     "williamboman/mason-lspconfig.nvim",
@@ -31,7 +34,8 @@ return {
       auto_install = true,
       ensure_installed = {
         "lua_ls",
-        "tsserver"
+        "tsserver",
+        "jdtls",
       },
       indent = { enable = true, },
     },
