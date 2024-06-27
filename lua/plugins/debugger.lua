@@ -43,34 +43,6 @@ return {
         end,
         { desc = 'Open debugging sidebar' }
       )
-
-      local filename = vim.fn.expand("%:p")
-      dap.configurations.java = {
-        {
-          type = 'java',
-          request = 'launch',
-          name = "Launch",
-          program = filename,
-          cwd = '${workspaceFolder}',
-          stopOnEntry = false,
-          preLaunchTask = "",
-          sourceLanguages = { "java" },
-          externalConsole = false,
-          internalConsoleOptions = "neverOpen",
-          rootPath = "${workspaceFolder}",
-          classPaths = {},
-          libs = {},
-          javaHome = "/usr/lib/jvm/java-1.21.0-openjdk-arm64/",
-          vmArgs = "-Xmx1024M",
-          delegate = {
-            port = 5005,
-            host = "localhost",
-            transport = "socket",
-            rootPath = "${workspaceFolder}"
-          },
-          filters = {}
-        }
-      }
     end
   }
 }
