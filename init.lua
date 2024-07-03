@@ -3,7 +3,9 @@ require("vim-options")
 require("mappings")
 -- vim options and general mappings ends here
 
-
+-- Adding custom commands
+require("custom")
+-- Custom scripts end here
 
 
 -- lazy setup starts here

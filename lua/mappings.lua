@@ -68,6 +68,9 @@ keymap("v", "<", "<gv", { noremap = true })
 keymap('v', '<Up>', 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { noremap = true, expr = true, desc = 'Move up' })
 keymap('v', '<Down>', 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { noremap = true, expr = true, desc = 'Move down' })
 
+-- Copy selected text to system clipboard
+vim.keymap.set('v', '<leader>y', '"+y', { noremap = true })
+
 
 
 keymap('t', '<C-x>', vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true),
