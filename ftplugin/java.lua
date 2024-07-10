@@ -66,7 +66,7 @@ local config = {
   },
 
   -- on_attach = require("config.lsp").on_attach,
-  capabilities = require("utils.lspconfig").capabilities,
+  capabilities = require("utils.lsp-config").capabilities,
   root_dir = root_dir,
 
   -- Here you can configure eclipse.jdt.ls specific settings
@@ -83,10 +83,6 @@ local config = {
           {
             name = "JavaSE-21",
             path = "/usr/lib/jvm/java-21-openjdk-arm64",
-          },
-          {
-            name = "mac-java-17-default",
-            path = "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home",
           },
         },
       },
@@ -110,7 +106,7 @@ local config = {
       format = {
         enabled = true,
         settings = {
-          url = vim.fn.stdpath "config" .. "/lang-servers/intellij-java-google-style.xml",
+          url = "~/.config/nvim/lang-servers/intellij-java-google-style.xml",
           profile = "GoogleStyle",
         },
       },
@@ -159,9 +155,9 @@ local config = {
 }
 
 config.on_attach = function(client, bufnr)
+  require("utils.lsp-config").on_attach(client, bufnr)
   local _, _ = pcall(vim.lsp.codelens.refresh)
   jdtls.setup_dap({ hotcodereplace = "auto" })
-  require("utils.lspconfig").on_attach(client, bufnr)
   local status_ok, jdtls_dap = pcall(require, "jdtls.dap")
   if status_ok then
     jdtls_dap.setup_dap_main_class_configs()
@@ -193,9 +189,20 @@ require("jdtls.setup").add_commands()
 --   false
 -- )
 
-vim.bo.shiftwidth = 2
-vim.bo.tabstop = 2
+-- vim.bo.shiftwidth = 2
+-- vim.bo.tabstop = 2
 
+
+-- Java specific tab settings
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "java",
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
+  end,
+})
 
 
 local which_key = require("which-key")
