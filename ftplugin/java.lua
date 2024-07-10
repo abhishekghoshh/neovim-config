@@ -20,11 +20,6 @@ end
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 local workspace_dir = WORKSPACE_PATH .. project_name
 
-local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
-local root_dir = require("jdtls.setup").find_root(root_markers)
-if root_dir == "" then
-  return
-end
 
 -- Setup Capabilities
 local extendedClientCapabilities = jdtls.extendedClientCapabilities
@@ -33,11 +28,11 @@ extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 -- Setup Testing and Debugging
 local bundles = {}
 local mason_path = vim.fn.glob(vim.fn.stdpath "data" .. "/mason/")
-vim.list_extend(bundles, vim.split(vim.fn.glob(mason_path .. "packages/java-test/extension/server/*.jar"), "\n"))
+vim.list_extend(bundles, vim.split(vim.fn.glob(mason_path .. "share/java-test/extension/server/*.jar"), "\n"))
 vim.list_extend(
   bundles,
   vim.split(
-    vim.fn.glob(mason_path .. "packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar"),
+    vim.fn.glob(mason_path .. "share/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar"),
     "\n"
   )
 )
@@ -64,10 +59,15 @@ local config = {
     "-data",
     workspace_dir,
   },
-
-  -- on_attach = require("config.lsp").on_attach,
+  on_attach = function(client, bufnr)
+    require("utils.lsp-config").on_attach(client, bufnr)
+    local _, _ = pcall(vim.lsp.codelens.refresh)
+    jdtls.setup_dap({ hotcodereplace = "auto" })
+    require('jdtls.dap').setup_dap_main_class_configs()
+    vim.lsp.codelens.refresh()
+  end,
   capabilities = require("utils.lsp-config").capabilities,
-  root_dir = root_dir,
+  root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
 
   -- Here you can configure eclipse.jdt.ls specific settings
   -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
@@ -83,6 +83,10 @@ local config = {
           {
             name = "JavaSE-21",
             path = "/usr/lib/jvm/java-21-openjdk-arm64",
+          },
+          {
+            name = "JavaSE-17",
+            path = "/usr/lib/jvm/jdk-17.0.10",
           },
         },
       },
@@ -103,15 +107,15 @@ local config = {
           enabled = "all", -- literals, all, none
         },
       },
+      signatureHelp = { enabled = true },
       format = {
         enabled = true,
         settings = {
-          url = "~/.config/nvim/lang-servers/intellij-java-google-style.xml",
+          url = "file://" .. vim.fn.expand("~/.config/nvim/lang-servers/intellij-java-google-style.xml"),
           profile = "GoogleStyle",
         },
       },
     },
-    signatureHelp = { enabled = true },
     completion = {
       favoriteStaticMembers = {
         "org.hamcrest.MatcherAssert.assertThat",
@@ -121,6 +125,12 @@ local config = {
         "java.util.Objects.requireNonNull",
         "java.util.Objects.requireNonNullElse",
         "org.mockito.Mockito.*",
+      },
+      importOrder = {
+        "java",
+        "javax",
+        "com",
+        "org"
       },
     },
     contentProvider = { preferred = "fernflower" },
@@ -138,7 +148,6 @@ local config = {
       useBlocks = true,
     },
   },
-
   flags = {
     allow_incremental_sync = true,
   },
@@ -154,16 +163,6 @@ local config = {
   },
 }
 
-config.on_attach = function(client, bufnr)
-  require("utils.lsp-config").on_attach(client, bufnr)
-  local _, _ = pcall(vim.lsp.codelens.refresh)
-  jdtls.setup_dap({ hotcodereplace = "auto" })
-  local status_ok, jdtls_dap = pcall(require, "jdtls.dap")
-  if status_ok then
-    jdtls_dap.setup_dap_main_class_configs()
-  end
-  vim.lsp.codelens.refresh()
-end
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   pattern = { "*.java" },
@@ -192,17 +191,6 @@ require("jdtls.setup").add_commands()
 -- vim.bo.shiftwidth = 2
 -- vim.bo.tabstop = 2
 
-
--- Java specific tab settings
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "java",
-  callback = function()
-    vim.opt_local.tabstop = 4
-    vim.opt_local.softtabstop = 4
-    vim.opt_local.shiftwidth = 4
-    vim.opt_local.expandtab = true
-  end,
-})
 
 
 local which_key = require("which-key")
