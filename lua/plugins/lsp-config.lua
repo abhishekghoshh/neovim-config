@@ -86,6 +86,19 @@ return {
         on_attach = on_attach,
         capabilities = capabilities,
       }
+
+      -- java lsp setup
+      lspconfig.jdtls.setup {
+        settings = {
+            java = {
+                configuration = {
+                    -- Specify your XML configuration file here
+                },
+            },
+        },
+      }
+
+      -- golang lsp setup
       lspconfig.gopls.setup {
         -- In your nvim-lspconfig configuration
         on_attach = function(client, bufnr)
