@@ -43,6 +43,17 @@ return {
         end,
         { desc = 'Open debugging sidebar' }
       )
+
+
+      dap.configurations.java = {
+        {
+          type = "java",
+          request = "launch",
+          name = "Debug Current File",
+          mainClass = "${file}",
+          args = "",
+        }
+      }
     end
   }
 }
