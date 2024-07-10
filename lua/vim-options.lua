@@ -6,20 +6,20 @@ vim.cmd("set nu")
 vim.cmd("set clipboard+=unnamedplus")
 vim.g.mapleader = " "
 
-vim.g.clipboard = {
-  name = 'wl-clipboard',
-  copy = {
-    ['+'] = 'wl-copy',
-    ['*'] = 'wl-copy',
-  },
-  paste = {
-    ['+'] = 'wl-paste',
-    ['*'] = 'wl-paste',
-  },
-  cache_enabled = 1,
-   -- Disable X11 clipboard support
-  iswin = 0,
-  isnvim = 0,
-}
-
-
+if not vim.fn.has('mac') then
+  vim.g.clipboard = {
+    name = 'wl-clipboard',
+    copy = {
+      ['+'] = 'wl-copy',
+      ['*'] = 'wl-copy',
+    },
+    paste = {
+      ['+'] = 'wl-paste',
+      ['*'] = 'wl-paste',
+    },
+    cache_enabled = 1,
+    -- Disable X11 clipboard support
+    iswin = 0,
+    isnvim = 0,
+  }
+end
