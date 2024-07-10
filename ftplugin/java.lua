@@ -79,6 +79,8 @@ local config = {
       },
       configuration = {
         updateBuildConfiguration = "interactive",
+        runtimes = {
+        },
       },
       maven = {
         downloadSources = true,
@@ -91,6 +93,11 @@ local config = {
       },
       references = {
         includeDecompiledSources = true,
+      },
+      inlayHints = {
+        parameterNames = {
+          enabled = "all", -- literals, all, none
+        },
       },
       format = {
         enabled = true,
