@@ -83,7 +83,11 @@ local config = {
           {
             name = "JavaSE-21",
             path = "/usr/lib/jvm/java-21-openjdk-arm64",
-          }
+          },
+          {
+            name = "mac-java-17-default",
+            path = "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home",
+          },
         },
       },
       maven = {
