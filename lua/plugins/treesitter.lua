@@ -8,6 +8,7 @@ return {
         "c",
         "lua",
         "go",
+        "gomod",
         "rust",
         "java",
         "scala",

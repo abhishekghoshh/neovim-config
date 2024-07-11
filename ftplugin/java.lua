@@ -60,11 +60,18 @@ local config = {
     workspace_dir,
   },
   on_attach = function(client, bufnr)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
     require("utils.lsp-config").on_attach(client, bufnr)
     local _, _ = pcall(vim.lsp.codelens.refresh)
     jdtls.setup_dap({ hotcodereplace = "auto" })
     require('jdtls.dap').setup_dap_main_class_configs()
     vim.lsp.codelens.refresh()
+    -- Set tab size to 4 spaces
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
   end,
   capabilities = require("utils.lsp-config").capabilities,
   root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
@@ -187,10 +194,6 @@ require("jdtls.setup").add_commands()
 --   ]],
 --   false
 -- )
-
--- vim.bo.shiftwidth = 2
--- vim.bo.tabstop = 2
-
 
 
 local which_key = require("which-key")

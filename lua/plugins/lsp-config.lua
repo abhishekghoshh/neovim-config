@@ -16,10 +16,10 @@ return {
           "clangd",
           "clang-format",
           "pyre",
-          "gopls",
+          "delve", "gotests", "golangci-lint", "gofumpt", "goimports", "golangci-lint-langserver", "impl", "gomodifytags",
+          "iferr", "gotestsum",
           "rust-analyzer",
-          "java-test",
-          "java-debug-adapter",
+          "java-test", "java-debug-adapter",
         },
         indent = {
           enable = true,
@@ -58,32 +58,36 @@ return {
         capabilities = capabilities,
       }
 
+
+      local go_custom_on_attach = function(client, bufnr)
+        on_attach(client, bufnr)
+        --- Auto commands before writing
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          buffer = bufnr,
+          callback = function()
+            --- auto format on save
+            vim.lsp.buf.format({ bufnr = bufnr })
+            --- Auto import on save
+            local params = vim.lsp.util.make_range_params(nil, "utf-16")
+            params.context = { only = { "source.organizeImports" } }
+            local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+            for _, res in pairs(result or {}) do
+              for _, r in pairs(res.result or {}) do
+                if r.edit then
+                  vim.lsp.util.apply_workspace_edit(r.edit, "utf-16")
+                else
+                  vim.lsp.buf.execute_command(r.command)
+                end
+              end
+            end
+          end,
+        })
+      end
+
       -- golang lsp setup
       lspconfig.gopls.setup {
         -- In your nvim-lspconfig configuration
-        on_attach = function(client, bufnr)
-          --- Auto commands before writing
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            buffer = bufnr,
-            callback = function()
-              --- auto format on save
-              vim.lsp.buf.format({ bufnr = bufnr })
-              --- Auto import on save
-              local params = vim.lsp.util.make_range_params(nil, "utf-16")
-              params.context = { only = { "source.organizeImports" } }
-              local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
-              for _, res in pairs(result or {}) do
-                for _, r in pairs(res.result or {}) do
-                  if r.edit then
-                    vim.lsp.util.apply_workspace_edit(r.edit, "utf-16")
-                  else
-                    vim.lsp.buf.execute_command(r.command)
-                  end
-                end
-              end
-            end,
-          })
-        end,
+        on_attach = go_custom_on_attach,
         capabilities = capabilities,
         cmd = { "gopls" },
         filetypes = { "go", "gomod", "gowork", "gotmpl" },

@@ -1,6 +1,6 @@
 return {
   {
-    "hrsh7th/cmp-nvim-lsp"
+    "hrsh7th/cmp-nvim-lsp",
   },
   {
     "L3MON4D3/LuaSnip",
@@ -32,12 +32,43 @@ return {
           ["<C-e>"] = cmp.mapping.abort(),
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
         }),
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "luasnip" }, -- For luasnip users.
-        }, {
-          { name = "buffer" },
-        }),
+        sources = {
+          { name = "luasnip",  priority = 1 },
+          { name = "nvim_lsp", priority = 2 },
+          { name = "buffer",   priority = 3 },
+          { name = "path",     priority = 4 },
+        },
+        completion_item = {
+          snippetPrefix = ' ',
+          documentation = true,
+          detail = true,
+          icons = {
+            Text = '',
+            Method = '',
+            Function = '',
+            Constructor = '',
+            Field = '',
+            Variable = '',
+            Class = '',
+            Interface = '',
+            Module = '',
+            Property = '',
+            Unit = '',
+            Value = '',
+            Enum = '',
+            Keyword = '',
+            Snippet = '',
+            Color = '',
+            File = '',
+            Reference = '',
+            Folder = '',
+            EnumMember = '',
+            Constant = '',
+            Struct = '',
+            Event = '',
+            Operator = '',
+          },
+        },
       })
     end,
   },

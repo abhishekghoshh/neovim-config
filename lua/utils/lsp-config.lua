@@ -31,6 +31,9 @@ lspconfig.on_attach = function(client, bufnr)
     { desc = "Remove workspace folder" })
   vim.keymap.set("n", "<leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
     { desc = "List workspace folders" })
+
+
+  vim.api.nvim_set_keymap('i', '<C-Space>', 'pumvisible() ? "<C-n>" : "<C-x><C-o>"', { expr = true, noremap = true })
 end
 
 -- lsp config capabilities function
