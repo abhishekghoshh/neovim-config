@@ -46,8 +46,8 @@ keymap('n', '<C-s>', '<cmd> w <CR>', { noremap = true, desc = 'Save file' })
 keymap('n', '<C-c>', '<cmd> %y+ <CR>', { noremap = true, desc = 'Copy whole file' })
 
 -- toggle line numbering
-keymap('n', '<leader>n', '<cmd> set nu! <CR>', { noremap = true, desc = 'Toggle line number' })
-keymap('n', '<leader>rn', '<cmd> set rnu! <CR>', { noremap = true, desc = 'Toggle relative number' })
+keymap('n', '<leader>nu', '<cmd> set nu! <CR>', { noremap = true, desc = 'Toggle line number' })
+keymap('n', '<leader>rnu', '<cmd> set rnu! <CR>', { noremap = true, desc = 'Toggle relative number' })
 
 keymap('n', 'j', 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { noremap = true, expr = true, desc = 'Move down' })
 keymap('n', 'k', 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { noremap = true, expr = true, desc = 'Move up' })
